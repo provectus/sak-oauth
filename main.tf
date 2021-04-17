@@ -92,6 +92,7 @@ locals {
                 "forceString" = true
               }
             })
+          )
         }
       }
       "syncPolicy" = {
