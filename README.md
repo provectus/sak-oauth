@@ -22,14 +22,11 @@ Add ingress annotation to you service for auth mode enabled
     "kubernetes.io/auth-url"     = "https://oauth2.${local.domain[0]}/oauth2/auth"
     "kubernetes.io/auth-signin"  = "https://oauth2.${local.domain[0]}/oauth2/sign_in?rd=https://$host$request_uri"
 ```
+## Requirements
 
-## Providers
-
-| Name | Version |
-|------|---------|
-| helm | n/a |
-| kubernetes | n/a |
-| local | n/a |
+```
+terraform >= 1.1
+ ```
 
 ## Inputs
 
