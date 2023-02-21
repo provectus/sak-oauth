@@ -28,11 +28,6 @@ variable "namespace_name" {
   description = "A name of namespace for creating"
 }
 
-variable "cluster_name" {
-  type        = string
-  default     = null
-  description = "A name of the Amazon EKS cluster"
-}
 
 variable "domains" {
   type        = list(string)
