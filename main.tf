@@ -1,10 +1,3 @@
-resource "kubernetes_namespace" "this" {
-  count = var.namespace == "" ? 1 : 0
-  metadata {
-    name = var.namespace_name
-  }
-}
-
 resource "kubernetes_secret" "this" {
 
   metadata {
@@ -46,12 +39,11 @@ resource "local_file" "this" {
 
 locals {
   argocd_enabled = length(var.argocd) > 0 ? 1 : 0
-  namespace      = coalescelist(kubernetes_namespace.this, [{ "metadata" = [{ "name" = var.namespace }] }])[0].metadata[0].name
-
-  name       = "oauth2-proxy"
-  repository = "https://charts.helm.sh/stable"
-  chart      = "oauth2-proxy"
-  version    = var.chart_version
+  namespace      = var.namespace
+  name           = "oauth2-proxy"
+  repository     = "https://charts.helm.sh/stable"
+  chart          = "oauth2-proxy"
+  version        = var.chart_version
 
 
   app = {
@@ -83,8 +75,8 @@ locals {
             values({
               for key, value in var.ingress_annotations :
               key => {
-                "name"  = "ingress.annotations.${replace(key, ".", "\\.")}"
-                "value" = tostring(value)
+                "name"        = "ingress.annotations.${replace(key, ".", "\\.")}"
+                "value"       = tostring(value)
                 "forceString" = true
               }
             })
@@ -96,7 +88,11 @@ locals {
           "prune"    = true
           "selfHeal" = true
         }
+        "syncOptions" = {
+          "createNamespace" = true
+        }
       }
+
     }
   }
 
